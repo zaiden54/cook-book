@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import bcrypt from 'bcrypt';
 import { User } from '../../db/models';
+import mailer from '../middlewares/nodemailer';
 
 const apiAuthRouter = Router();
 
@@ -31,6 +32,16 @@ apiAuthRouter.post('/signup', async (req, res) => {
     email: user.email,
     id: user.id,
   };
+
+  const message = {
+    to: req.body.email,
+    subject:
+        'Вы успешно зарегистрировались на нашем сайте Cook-book!',
+    text: `Добро пожаловать на наш сайт! Мы очень надеемся, что вы сможете найти рецепт по своему вкусу!
+
+      Данное письмо не требует ответа. `,
+  };
+  mailer(message);
 
   res.sendStatus(200);
 });
