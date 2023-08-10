@@ -55,6 +55,6 @@ app.use('/api', apiAddRouter);
 app.use('/auth', authMiddleware, authRouter);
 app.use('/api/auth', apiAuthRouter);
 app.use('/profile', profileRouter);
-app.use('/api/profile', apiProfileRouter)
+app.use('/api/profile', apiProfileRouter);
 
 app.listen(PORT, () => console.log(`App has started on port ${PORT}`));
