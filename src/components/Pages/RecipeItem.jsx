@@ -1,6 +1,7 @@
 import React from 'react';
 
 export default function RecipeItem({ recipe }) {
+  console.log('recipe', recipe);
   return (
     <div className="col-4 mt-1">
       <div className="card">
