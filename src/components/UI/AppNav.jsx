@@ -4,7 +4,7 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 
-export default function AppNav() {
+export default function AppNav({ user }) {
   const [currentUser, setCurrentUser] = useState();
 
   const logoutHandler = async () => {
@@ -24,17 +24,21 @@ export default function AppNav() {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
             <Nav.Link href="/">Главная</Nav.Link>
-            <Nav.Link href="/profile">Профиль</Nav.Link>
-            <NavDropdown title="Авторизация" id="basic-nav-dropdown">
-              <NavDropdown.Item href="/auth/signup">Зарегестрироваться</NavDropdown.Item>
-              <NavDropdown.Item href="/auth/login">
-                Войти
-              </NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item onClick={logoutHandler}>
-                Выйти
-              </NavDropdown.Item>
-            </NavDropdown>
+
+            {user
+              ? (
+                <>
+                  <Nav.Link href="/profile">Профиль</Nav.Link>
+                  <Nav.Link onClick={logoutHandler}>Выйти</Nav.Link>
+                </>
+              )
+              : (
+                <NavDropdown title="Авторизация" id="basic-nav-dropdown">
+                  <NavDropdown.Item href="/auth/signup">Зарегестрироваться</NavDropdown.Item>
+                  <NavDropdown.Item href="/auth/login">Войти</NavDropdown.Item>
+                </NavDropdown>
+              )}
+
           </Nav>
         </Navbar.Collapse>
       </Container>

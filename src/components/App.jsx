@@ -5,10 +5,10 @@ import AppNav from './UI/AppNav';
 import LoginPage from './Pages/LoginPage';
 import SignUpPage from './Pages/SignUpPage';
 
-export default function App() {
+export default function App({ user }) {
   return (
     <div className="container">
-      <AppNav />
+      <AppNav user={user} />
       <Routes>
         <Route path="/" element={<MainPage />} />
         <Route path="/auth/login" element={<LoginPage />} />
