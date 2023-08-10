@@ -1,5 +1,1 @@
-DB_NAME=
-DB_USER=
-DB_PASS=
-SERVER_PORT=
-SESSION_SECRET=
+DB_URL=postgres://[username]:[pass]@localhost:5432/[db_name]

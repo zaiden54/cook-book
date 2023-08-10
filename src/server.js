@@ -9,6 +9,8 @@ import apiRouter from './routes/apiRouter';
 import authRouter from './routes/authRouter';
 import apiAuthRouter from './routes/apiAuthRouter';
 import { authMiddleware } from './middlewares/apiAuthMiddleware';
+import profileRouter from './routes/profileRouter';
+import apiProfileRouter from './routes/apiProfileRouter';
 
 require('dotenv').config();
 
@@ -52,5 +54,7 @@ app.use('/', indexRouter);
 app.use('/api', apiRouter);
 app.use('/auth', authMiddleware, authRouter);
 app.use('/api/auth', apiAuthRouter);
+app.use('/profile', profileRouter);
+app.use('/api/profile', apiProfileRouter)
 
 app.listen(PORT, () => console.log(`App has started on port ${PORT}`));
