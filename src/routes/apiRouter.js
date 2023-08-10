@@ -1,4 +1,5 @@
 import express from 'express';
+import recipe from '../../db/models/recipe';
 
 const router = express.Router();
 
@@ -16,6 +17,18 @@ router.get('/recipe', async (req, res) => {
   arr = await Promise.allSettled(arr);
   arr = arr.map(((el) => el.value.meals[0]));
   res.json(arr);
+});
+
+router.post('/recipe/add', async (req, res) => {
+  console.log('REQ.BODY-------', req.body);
+  // await recipe.create({
+  //   title: req.body.strMeal,
+  //   imgage: req.body.strMealThimb,
+  //   instructions: req.body.strInstructions,
+  // });
+
+  // const recipes = await recipe.findAll();
+  // console.log(recipes);
 });
 
 export default router;
