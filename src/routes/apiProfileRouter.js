@@ -1,5 +1,5 @@
 import express from 'express';
-import { RecipeUser, User, Recipe } from '../../db/models'; // чтобы связать пользователя с постами, тащим сюда еще юзера
+import { RecipeUser, Recipe } from '../../db/models'; // чтобы связать пользователя с постами, тащим сюда еще юзера
 
 const apiProfileRouter = express.Router();
 
@@ -26,7 +26,7 @@ apiProfileRouter.delete('/:id', async (req, res) => {
       });
     }
 
-    console.log(JSON.stringify(hasLikes, null, 1));
+    // console.log(JSON.stringify(hasLikes, null, 1));
     res.sendStatus(200);
   } catch (err) {
     console.log(err);

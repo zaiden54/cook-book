@@ -1,17 +1,34 @@
-import React from "react";
-import MyRecipeItem from "./MyRecipeItem";
+import React, { useState } from 'react';
+import axios from 'axios';
+import MyRecipeItem from './MyRecipeItem';
 
-export default function ProfilePage({myrecipes}) {
+export default function ProfilePage({ myrecipes }) {
+  const [currentRecipes, setRecipes] = useState(myrecipes);
+
+  const deletefavoutiteHandler = (id) => {
+    axios
+      .delete(`/api/profile/${id}`)
+      .then((res) => {
+        // setRecipes(currentRecipes.filter((onerec) => onerec.id !== id));
+        setRecipes((prev) => prev.filter((el) => el.id !== id));
+      })
+      .catch((err) => console.log(err.response.data));
+  };
   return (
 
-    
-    <>
-      <h1> Мои избранные Рецепты</h1>
+    <div className="container">
+      <div className="text-center mt-4 mb-4">
+        <h3>Мои избранные Рецепты</h3>
+      </div>
       <div className="row justify-content-evenly wrapper">
-        {myrecipes.map((myrecipe) => <MyRecipeItem myrecipe={myrecipe} key={myrecipe.idMeal} />)}
+        {currentRecipes.map((myrecipe) => (
+          <MyRecipeItem
+            myrecipe={myrecipe}
+            key={myrecipe.idMeal}
+            deletefavoutiteHandler={deletefavoutiteHandler}
+          />
+        ))}
       </div>
-      <div className="d-flex justify-content-center align-item-center mt-3 mb-3">
-      </div>
-    </>
-  )
+    </div>
+  );
 }
