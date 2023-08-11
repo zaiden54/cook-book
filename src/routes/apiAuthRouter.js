@@ -7,7 +7,7 @@ const apiAuthRouter = Router();
 apiAuthRouter.post('/signup', async (req, res) => {
   const { userName, email, password } = req.body;
 
-  console.log(userName, password);
+  // console.log(userName, password);
 
   if (!userName || !email || !password) {
     return res.status(400).json({ message: 'Заполните все поля' });

@@ -10,7 +10,7 @@ export default function MainPage() {
       .then((data) => data.json())
       .then((data) => setRecipes(data));
   }, [page]);
-  console.log(recipes);
+  // console.log(recipes);
 
   return (
     <>
