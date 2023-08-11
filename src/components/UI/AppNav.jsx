@@ -1,36 +1,47 @@
-import React from 'react';
+import React, { useState } from 'react';
+import Container from 'react-bootstrap/Container';
+import Nav from 'react-bootstrap/Nav';
+import Navbar from 'react-bootstrap/Navbar';
+import NavDropdown from 'react-bootstrap/NavDropdown';
 
-export default function AppNav() {
+export default function AppNav({ user }) {
+  const [currentUser, setCurrentUser] = useState();
+
+  const logoutHandler = async () => {
+    const response = await fetch('/api/auth/logout');
+
+    if (response.ok) {
+      setCurrentUser(currentUser);
+      window.location = '/';
+    }
+  };
+
   return (
-    <nav className="navbar navbar-expand-lg bg-body-tertiary">
-      <div className="container-fluid">
-        <a className="navbar-brand" href="/">Lynx</a>
-        <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-          <span className="navbar-toggler-icon" />
-        </button>
-        <div className="collapse navbar-collapse" id="navbarNav">
-          <ul className="navbar-nav">
-            <li className="nav-item">
-              <a className="nav-link active" aria-current="page" href="/post">Post</a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link active" aria-current="page" href="/test">test</a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link active" aria-current="page" href="/count">Count Page</a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link active" aria-current="page" href="/reg">Registration</a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link active" aria-current="page" href="/auth">Auth</a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link active" aria-current="page" href="/logout">Logout</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
+    <Navbar expand="lg" className="bg-body-tertiary">
+      <Container>
+        <Navbar.Brand href="/">Cook-Book</Navbar.Brand>
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Nav className="me-auto">
+            <Nav.Link href="/">Главная</Nav.Link>
+
+            {user
+              ? (
+                <>
+                  <Nav.Link href="/profile">Профиль</Nav.Link>
+                  <Nav.Link onClick={logoutHandler}>Выйти</Nav.Link>
+                </>
+              )
+              : (
+                <NavDropdown title="Авторизация" id="basic-nav-dropdown">
+                  <NavDropdown.Item href="/auth/signup">Зарегистрироваться</NavDropdown.Item>
+                  <NavDropdown.Item href="/auth/login">Войти</NavDropdown.Item>
+                </NavDropdown>
+              )}
+
+          </Nav>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
   );
 }
