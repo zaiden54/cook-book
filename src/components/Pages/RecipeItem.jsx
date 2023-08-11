@@ -4,7 +4,11 @@ import {
 } from 'react-bootstrap';
 
 export default function RecipeItem({ recipe, addToFavHandler }) {
-  const countIng = 0;
+  let countIng = 0;
+  const keys = Object.keys(recipe);
+  keys.forEach((key) => {
+    if (key.startsWith('strIngredient') && recipe[key]) countIng += 1;
+  });
   const [status, setStatus] = useState(false);
   return (
     <div className="col-4 mt-1">
@@ -21,9 +25,14 @@ export default function RecipeItem({ recipe, addToFavHandler }) {
             <Button variant="light" onClick={() => addToFavHandler(recipe, setStatus)}>Add to favourite</Button>
           </div>
           <Container>
+            <Row className="row justify-content-evenly wrapper">
+              Ingredients:
+              {' '}
+              {countIng}
+            </Row>
             <Row>
-              <Col md={4}>{countIng}</Col>
-              <Col md={{ span: 4, offset: 4 }}>time</Col>
+              <Col md={4}>{recipe.strArea}</Col>
+              <Col md={{ span: 4, offset: 4 }}>{recipe.strCategory}</Col>
             </Row>
           </Container>
         </div>

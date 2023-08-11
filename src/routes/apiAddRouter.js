@@ -6,35 +6,60 @@ import {
 
 const router = express.Router();
 
-router.get('/recipe/list/:id', async (req, res) => {
-  const { id } = req.params;
-  let str;
-  switch (id) {
-    case '0':
-      str = 'http://www.themealdb.com/api/json/v1/1/random.php';
-      break;
-    case '1':
-      str = 'http://www.themealdb.com/api/json/v1/1/filter.php?c=Seafood';
-      break;
-    case '2':
-      str = 'http://www.themealdb.com/api/json/v1/1/filter.php?a=Canadian';
-      break;
-    default:
-      res.sendStatus(501);
-  }
-  console.log(str);
-
+router.get('/categories', async (req, res) => {
   try {
+    const categories = await (await fetch('http://www.themealdb.com/api/json/v1/1/list.php?c=list')).json();
+    res.json(categories.meals);
+  } catch (err) {
+    console.log('Categories Error ===', err);
+  }
+});
+router.get('/countries', async (req, res) => {
+  try {
+    const countries = await (await fetch('http://www.themealdb.com/api/json/v1/1/list.php?a=list')).json();
+    res.json(countries.meals);
+  } catch (err) {
+    console.log('Countries Error ===', err);
+  }
+});
+
+router.get('/recipes/:type/:name/:page', async (req, res) => {
+  try {
+    const { type, name } = req.params;
     let arr = [];
-    for (let i = 0; i < 12; i += 1) {
-      arr.push(fetch(str));
+    let str;
+    let set = [];
+    const idMeals = [];
+    // Создаем массив id блюд
+    if (type === 'all') {
+      str = 'http://www.themealdb.com/api/json/v1/1/random.php';
+    } else if (type === 'categories') {
+      str = `http://www.themealdb.com/api/json/v1/1/filter.php?c=${name}`;
+    } else if (type === 'countries') {
+      str = `http://www.themealdb.com/api/json/v1/1/filter.php?a=${name}`;
+    } else res.sendStatus(504);
+    if (str !== 'http://www.themealdb.com/api/json/v1/1/random.php') {
+      const recipes = (await (await fetch(str)).json()).meals;
+      recipes.forEach((recipe) => idMeals.push(recipe.idMeal));
+    }
+    console.log('IdMeals == ', idMeals);
+    // Пытаемся получить 12 блюд
+    if (type === 'all') {
+      for (let i = 0; i < 12; i += 1) {
+        arr.push(fetch(str));
+      }
+    } else {
+      for (let i = 0; i < 12 && i < idMeals.length; i += 1) {
+        str = `http://www.themealdb.com/api/json/v1/1/lookup.php?i=${idMeals[i]}`;
+        arr.push(fetch(str));
+      }
     }
     arr = (await Promise.allSettled(arr)).filter((el) => el.status === 'fulfilled');
     arr = arr.map(((el) => el.value.json()));
     arr = (await Promise.allSettled(arr)).filter((el) => el.status === 'fulfilled');
     arr = arr.map(((el) => el.value.meals[0]));
-    // удаление повторний
-    const set = arr.filter((el, i, array) => {
+    // удаление повторений
+    set = arr.filter((el, i, array) => {
       const temp = [];
       for (let j = 0; j < i; j += 1) {
         temp.push(array[j].idMeal);
@@ -42,14 +67,19 @@ router.get('/recipe/list/:id', async (req, res) => {
       if (temp.includes(el.idMeal)) return false;
       return true;
     });
-    while (set.length < 12) {
-      const newRecipe = (await ((await fetch(str)).json())).meals[0];
-      const temp = [];
-      set.forEach((el) => temp.push(el.idMeal));
-      if (!temp.includes(newRecipe.idMeal)) {
-        set.push(newRecipe);
-        console.log('Подгрузка, idMeal = ', newRecipe.idMeal);
+    // Если что-то не догрузилось, добираем остатки
+    let i = 0;
+    while (set.length < 12 && i < 24) {
+      if (!idMeals || (idMeals && i < idMeals.length)) {
+        const newRecipe = (await ((await fetch(str)).json())).meals[0];
+        const temp = [];
+        set.forEach((el) => temp.push(el.idMeal));
+        if (!temp.includes(newRecipe.idMeal)) {
+          set.push(newRecipe);
+          // console.log('Подгрузка, type = ', type, 'idMeal = ', newRecipe.idMeal);
+        }
       }
+      i += 1;
     }
     res.json(set);
   } catch (err) {
