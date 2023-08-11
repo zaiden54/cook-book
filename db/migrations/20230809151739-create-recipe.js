@@ -17,6 +17,9 @@ module.exports = {
       instructions: {
         type: Sequelize.TEXT,
       },
+      idMeal: {
+        type: Sequelize.STRING,
+      },
       catId: {
         type: Sequelize.INTEGER,
         references: {
@@ -24,7 +27,7 @@ module.exports = {
           key: 'id',
         },
       },
-      coutryId: {
+      countryId: {
         type: Sequelize.INTEGER,
         references: {
           model: 'Countries',

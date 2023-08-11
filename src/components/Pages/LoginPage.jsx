@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button, Form } from 'react-bootstrap';
 
 export default function LoginPage() {
+  const [message, setMessage] = useState(null);
+
   const inputsHandler = async (e) => {
     e.preventDefault();
 
@@ -17,6 +19,8 @@ export default function LoginPage() {
 
     if (response.ok) {
       window.location.href = '/';
+    } else {
+      setMessage((await response.json()).message);
     }
   };
   return (
@@ -34,6 +38,8 @@ export default function LoginPage() {
       <Button variant="primary" type="submit">
         Войти
       </Button>
+
+      <p className="mt-4">{message}</p>
     </Form>
   );
 }

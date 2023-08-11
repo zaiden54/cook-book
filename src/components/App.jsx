@@ -5,16 +5,20 @@ import RecipePage from './Pages/RecipePage';
 import AppNav from './UI/AppNav';
 import LoginPage from './Pages/LoginPage';
 import SignUpPage from './Pages/SignUpPage';
+import ProfilePage from './Pages/ProfilePage';
 
-export default function App({ recipe, user }) {
+export default function App({
+  recipe, user, myrecipes, meal,
+}) {
   return (
     <div className="container">
       <AppNav user={user} />
       <Routes>
         <Route path="/" element={<MainPage />} />
-        <Route path="/recipe/:id" element={<RecipePage />} />
+        <Route path="/recipe/:idMeal" element={<RecipePage meal={meal} />} />
         <Route path="/auth/login" element={<LoginPage />} />
         <Route path="/auth/signup" element={<SignUpPage />} />
+        <Route path="/profile" element={<ProfilePage myrecipes={myrecipes} />} />
       </Routes>
     </div>
   );

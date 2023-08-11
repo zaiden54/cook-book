@@ -34,7 +34,7 @@ export default function AppNav({ user }) {
               )
               : (
                 <NavDropdown title="Авторизация" id="basic-nav-dropdown">
-                  <NavDropdown.Item href="/auth/signup">Зарегестрироваться</NavDropdown.Item>
+                  <NavDropdown.Item href="/auth/signup">Зарегистрироваться</NavDropdown.Item>
                   <NavDropdown.Item href="/auth/login">Войти</NavDropdown.Item>
                 </NavDropdown>
               )}
