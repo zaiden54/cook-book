@@ -1,12 +1,14 @@
 /* eslint-disable no-await-in-loop */
 import express from 'express';
+import axios from 'axios';
+
 import {
   Recipe, Country, Category, Ingredient, RecipeIngredient, RecipeUser,
 } from '../../db/models';
 
-const router = express.Router();
+const apiAddRouter = express.Router();
 
-router.get('/recipe/list/:id', async (req, res) => {
+apiAddRouter.get('/recipe/list/:id', async (req, res) => {
   const { id } = req.params;
   let str;
   switch (id) {
@@ -58,7 +60,7 @@ router.get('/recipe/list/:id', async (req, res) => {
   }
 });
 
-router.post('/recipe/add', async (req, res) => {
+apiAddRouter.post('/recipe/add', async (req, res) => {
   try {
   // console.log('REQ.BODY-------', req.body);
     const country = await Country.findOne({
@@ -76,7 +78,7 @@ router.post('/recipe/add', async (req, res) => {
         image: req.body.strMealThumb,
         instructions: req.body.strInstructions,
         catId: category.id,
-        coutryId: country.id,
+        countryId: country.id,
       },
     });
     // console.log(createdRecipe);
@@ -120,4 +122,27 @@ router.post('/recipe/add', async (req, res) => {
   }
 });
 
-export default router;
+apiAddRouter.get('/recipe', async (req, res) => {
+  let arr = [];
+  for (let i = 0; i < 12; i += 1) {
+    arr.push(fetch('http://www.themealdb.com/api/json/v1/1/random.php'));
+  }
+  arr = await Promise.allSettled(arr);
+  arr = arr.map(((el) => (el.status === 'fulfilled' ? el.value.json() : null)));
+  arr = await Promise.allSettled(arr);
+  arr = arr.map(((el) => el.value.meals[0]));
+  res.json(arr);
+});
+
+apiAddRouter.get('/recipe/:idMeal', async (req, res) => {
+  const { idMeal } = req.params;
+  try {
+    const response = await axios.get(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${idMeal}`);
+    res.json(response.data);
+  } catch (error) {
+    // console.error(error);
+    res.sendStatus(500);
+  }
+});
+
+export default apiAddRouter;

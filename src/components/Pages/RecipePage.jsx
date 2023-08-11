@@ -6,7 +6,7 @@ import {
 export default function RecipePage({ meal }) {
   const ingredients = [];
 
-  for (let i = 1; i <= 20; i++) {
+  for (let i = 1; i <= 20; i += 1) {
     if (meal[`strIngredient${i}`] && meal[`strMeasure${i}`]) {
       ingredients.push([meal[`strIngredient${i}`], meal[`strMeasure${i}`], i]);
     }
