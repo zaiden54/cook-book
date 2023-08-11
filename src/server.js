@@ -5,11 +5,13 @@ import session from 'express-session';
 import store from 'session-file-store';
 import jsxRender from './utils/jsxRender';
 import indexRouter from './routes/indexRouter';
-import apiRouter from './routes/apiRouter';
+import apiAddRouter from './routes/apiAddRouter';
 import authRouter from './routes/authRouter';
 import apiAuthRouter from './routes/apiAuthRouter';
 import { authMiddleware } from './middlewares/apiAuthMiddleware';
 import recipeRouter from './routes/recipeRouter';
+import profileRouter from './routes/profileRouter';
+import apiProfileRouter from './routes/apiProfileRouter';
 
 require('dotenv').config();
 
@@ -50,9 +52,11 @@ app.use((req, res, next) => {
 });
 
 app.use('/', indexRouter);
-app.use('/api', apiRouter);
+app.use('/api', apiAddRouter);
 app.use('/auth', authMiddleware, authRouter);
 app.use('/api/auth', apiAuthRouter);
 app.use('/recipe', recipeRouter);
+app.use('/profile', profileRouter);
+app.use('/api/profile', apiProfileRouter);
 
 app.listen(PORT, () => console.log(`App has started on port ${PORT}`));

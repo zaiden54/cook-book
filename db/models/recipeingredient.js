@@ -1,7 +1,7 @@
-'use strict';
 const {
-  Model
+  Model,
 } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class RecipeIngredient extends Model {
     /**
@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   RecipeIngredient.init({
     recipeId: DataTypes.INTEGER,
-    ingredientId: DataTypes.INTEGER
+    ingredientId: DataTypes.INTEGER,
   }, {
     sequelize,
     modelName: 'RecipeIngredient',
