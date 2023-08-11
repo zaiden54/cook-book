@@ -48,26 +48,32 @@ apiAuthRouter.post('/signup', async (req, res) => {
 
 apiAuthRouter.post('/login', async (req, res) => {
   const { email, password } = req.body;
+  try {
+    if (!email || !password) {
+      return res.status(400).json({ message: 'Заполните все поля' });
+    }
 
-  if (!email || !password) {
-    return res.status(400).json({ message: 'Заполните все поля' });
+    const user = await User.findOne({
+      where: { email },
+    });
+
+    console.log(user);
+    
+
+    if (!user || !await bcrypt.compare(password, user?.password)) {
+      return res.status(400).json({ message: 'Неверная почта или пароль!' });
+    }
+
+    req.session.user = {
+      userName: user.userName,
+      email: user.email,
+      id: user.id,
+    };
+
+    res.sendStatus(200);
+  } catch (error) {
+    console.error(error);
   }
-
-  const user = await User.findOne({
-    where: { email },
-  });
-
-  if (!user && !await bcrypt.compare(password, user.password)) {
-    return res.status(400).json({ message: 'Неверная почта или пароль!' });
-  }
-
-  req.session.user = {
-    userName: user.userName,
-    email: user.email,
-    id: user.id,
-  };
-
-  res.sendStatus(200);
 });
 
 apiAuthRouter.get('/logout', (req, res) => {

@@ -9,6 +9,7 @@ profileRouter.get('/', async (req, res) => {
       {
         model: User,
         as: 'likedBy',
+        where: { id: req.session.user.id },
       },
     ],
   });

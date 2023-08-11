@@ -7,7 +7,7 @@ import indexRouter from './routes/indexRouter';
 import apiAddRouter from './routes/apiAddRouter';
 import authRouter from './routes/authRouter';
 import apiAuthRouter from './routes/apiAuthRouter';
-import { authMiddleware } from './middlewares/apiAuthMiddleware';
+import { apiProtectionMiddleware, authMiddleware } from './middlewares/apiAuthMiddleware';
 import recipeRouter from './routes/recipeRouter';
 import profileRouter from './routes/profileRouter';
 import apiProfileRouter from './routes/apiProfileRouter';
@@ -54,7 +54,7 @@ app.use('/api', apiAddRouter);
 app.use('/auth', authMiddleware, authRouter);
 app.use('/api/auth', apiAuthRouter);
 app.use('/recipe', recipeRouter);
-app.use('/profile', profileRouter);
+app.use('/profile', apiProtectionMiddleware, profileRouter);
 app.use('/api/profile', apiProfileRouter);
 
 app.listen(PORT, () => console.log(`App has started on port ${PORT}`));

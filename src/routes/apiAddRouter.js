@@ -77,6 +77,7 @@ apiAddRouter.post('/recipe/add', async (req, res) => {
         title: req.body.strMeal,
         image: req.body.strMealThumb,
         instructions: req.body.strInstructions,
+        idMeal: req.body.idMeal,
         catId: category.id,
         countryId: country.id,
       },
