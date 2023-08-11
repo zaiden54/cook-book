@@ -13,9 +13,6 @@ export default function MyRecipeItem({ myrecipe, deletefavoutiteHandler }) {
             <Card.Title>{myrecipe.title}</Card.Title>
           </div>
           <div className="text-center mt-2 mb-2">
-            {/* <DropdownButton id="dropdown-basic-button" title="Рецепт" variant="info">
-              <Dropdown.ItemText>{myrecipe.instructions}</Dropdown.ItemText>
-            </DropdownButton> */}
             <Button href={`/recipe/${myrecipe.idMeal}`}>Рецепт</Button>
           </div>
           <div className="d-flex justify-content-center mt-3">

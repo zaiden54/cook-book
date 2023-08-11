@@ -9,7 +9,7 @@ export default function ProfilePage({ myrecipes }) {
     axios
       .delete(`/api/profile/${id}`)
       .then((res) => {
-        // setRecipes(currentRecipes.filter((onerec) => onerec.id !== id));
+        // setRecipes(currentRecipes.filter((onerec) => onerec.id !== id)); // можно и так писать
         setRecipes((prev) => prev.filter((el) => el.id !== id));
       })
       .catch((err) => console.log(err.response.data));
