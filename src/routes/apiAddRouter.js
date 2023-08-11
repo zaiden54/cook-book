@@ -8,7 +8,7 @@ import {
 
 const apiAddRouter = express.Router();
 
-router.get('/categories', async (req, res) => {
+apiAddRouter.get('/categories', async (req, res) => {
   try {
     const categories = await (await fetch('http://www.themealdb.com/api/json/v1/1/list.php?c=list')).json();
     res.json(categories.meals);
@@ -16,7 +16,7 @@ router.get('/categories', async (req, res) => {
     console.log('Categories Error ===', err);
   }
 });
-router.get('/countries', async (req, res) => {
+apiAddRouter.get('/countries', async (req, res) => {
   try {
     const countries = await (await fetch('http://www.themealdb.com/api/json/v1/1/list.php?a=list')).json();
     res.json(countries.meals);
@@ -25,7 +25,7 @@ router.get('/countries', async (req, res) => {
   }
 });
 
-router.get('/recipes/:type/:name/:page', async (req, res) => {
+apiAddRouter.get('/recipes/:type/:name/:page', async (req, res) => {
   try {
     const { type, name } = req.params;
     let arr = [];
