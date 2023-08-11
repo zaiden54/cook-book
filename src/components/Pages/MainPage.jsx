@@ -4,6 +4,7 @@ import {
   Button, Col, Container, Dropdown, Row,
 } from 'react-bootstrap';
 import RecipeItem from './RecipeItem';
+import { auto } from '@popperjs/core';
 
 export default function MainPage() {
   const [page, setPage] = useState(0);
@@ -11,15 +12,22 @@ export default function MainPage() {
   const [categories, setCategories] = useState([]);
   const [countries, setCountries] = useState([]);
   const [type, setType] = useState('all/all');
+  console.log('----', recipes);
   useEffect(() => {
     fetch(`api/recipes/${type}/${page}`)
       .then((data) => data.json())
-      .then((data) => setRecipes((prev) => [...prev, ...data]));
+      .then((data) => {
+        const idS = recipes.map((el) => el.idMeal);
+        const uniqData = data.filter((el) => !idS.includes(el.idMeal));
+        setRecipes((prev) => [...prev, ...uniqData]);
+      });
   }, [page]);
   useEffect(() => {
     fetch(`api/recipes/${type}/${page}`)
       .then((data) => data.json())
-      .then((data) => setRecipes(() => data));
+      .then((data) => {
+        setRecipes(data);
+      });
   }, [type]);
   useEffect(() => {
     fetch('api/categories')
@@ -49,15 +57,16 @@ export default function MainPage() {
   };
   return (
     <>
-      <h1>Рецепты</h1>
+      <h1 className="mt-3 d-flex justify-content-center">Книга рецептов</h1>
       <div style={{
         display: 'block',
         width: 700,
         padding: 30,
+        margin: '0 auto',
       }}
       >
         <Container>
-          <Row>
+          <Row className="mt-3 d-flex justify-content-center w-100">
             <Col>
               <Button variant="secondary" onClick={() => setType('all/all')}>Remove filters</Button>
             </Col>
@@ -67,7 +76,7 @@ export default function MainPage() {
                   Category
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
-                  {categories.map((category) => <Dropdown.Item onClick={() => setType(`categories/${category.strCategory}`)} key={category.id}>{category.strCategory}</Dropdown.Item>)}
+                  {categories.map((category) => <Dropdown.Item onClick={() => setType(`categories/${category.title}`)} key={category.id}>{category.title}</Dropdown.Item>)}
                 </Dropdown.Menu>
               </Dropdown>
             </Col>
@@ -77,7 +86,7 @@ export default function MainPage() {
                   Country
                 </Dropdown.Toggle>
                 <Dropdown.Menu>
-                  {countries.map((country) => <Dropdown.Item onClick={() => setType(`countries/${country.strArea}`)} key={country.id}>{country.strArea}</Dropdown.Item>)}
+                  {countries.map((country) => <Dropdown.Item onClick={() => setType(`countries/${country.name}`)} key={country.id}>{country.name}</Dropdown.Item>)}
                 </Dropdown.Menu>
               </Dropdown>
             </Col>

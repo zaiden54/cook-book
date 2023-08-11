@@ -11,7 +11,7 @@ export default function RecipeItem({ recipe, addToFavHandler }) {
   });
   const [status, setStatus] = useState(false);
   return (
-    <div className="col-4 mt-1">
+    <div className="col-4 mt-3">
       <div className="card">
         <img
           style={{ height: '300px', objectFit: 'cover' }}
@@ -20,7 +20,7 @@ export default function RecipeItem({ recipe, addToFavHandler }) {
           alt="recipe_picture"
         />
         <div className="card-body">
-          <a href={`/recipe/${recipe.idMeal}`} className="card-text">{recipe.strMeal}</a>
+          <a href={`/recipe/${recipe.idMeal}`} className="card-text color-black d-flex justify-content-center link-dark">{recipe.strMeal}</a>
           <div className="d-flex justify-content-center align-item-center mt-3 mb-3">
             <Button variant="light" onClick={() => addToFavHandler(recipe, setStatus)}>Add to favourite</Button>
           </div>

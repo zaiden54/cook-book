@@ -10,16 +10,18 @@ const apiAddRouter = express.Router();
 
 apiAddRouter.get('/categories', async (req, res) => {
   try {
-    const categories = await (await fetch('http://www.themealdb.com/api/json/v1/1/list.php?c=list')).json();
-    res.json(categories.meals);
+    // const categories = await (await fetch('http://www.themealdb.com/api/json/v1/1/list.php?c=list')).json();
+    const categories = await Category.findAll();
+    res.json(categories);
   } catch (err) {
     console.log('Categories Error ===', err);
   }
 });
 apiAddRouter.get('/countries', async (req, res) => {
   try {
-    const countries = await (await fetch('http://www.themealdb.com/api/json/v1/1/list.php?a=list')).json();
-    res.json(countries.meals);
+    // const countries = await (await fetch('http://www.themealdb.com/api/json/v1/1/list.php?a=list')).json();
+    const countries = await Country.findAll();
+    res.json(countries);
   } catch (err) {
     console.log('Countries Error ===', err);
   }
@@ -27,7 +29,9 @@ apiAddRouter.get('/countries', async (req, res) => {
 
 apiAddRouter.get('/recipes/:type/:name/:page', async (req, res) => {
   try {
-    const { type, name } = req.params;
+    const { type, name, page } = req.params;
+    console.log('Type=', type, 'Name=', name, 'page=', page);
+    // const { type, name } = req.params;
     let arr = [];
     let str;
     let set = [];
@@ -44,7 +48,7 @@ apiAddRouter.get('/recipes/:type/:name/:page', async (req, res) => {
       const recipes = (await (await fetch(str)).json()).meals;
       recipes.forEach((recipe) => idMeals.push(recipe.idMeal));
     }
-    console.log('IdMeals == ', idMeals);
+    // console.log('IdMeals == ', idMeals);
     // Пытаемся получить 12 блюд
     if (type === 'all') {
       for (let i = 0; i < 12; i += 1) {
