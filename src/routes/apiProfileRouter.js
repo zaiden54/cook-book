@@ -25,8 +25,6 @@ apiProfileRouter.delete('/:id', async (req, res) => {
         },
       });
     }
-
-    // console.log(JSON.stringify(hasLikes, null, 1));
     res.sendStatus(200);
   } catch (err) {
     console.log(err);

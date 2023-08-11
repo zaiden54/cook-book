@@ -5,16 +5,16 @@ import {
 import axios from 'axios';
 
 export default function MyRecipeItem({ myrecipe }) {
-  const [onerecipe, setOneRecipe] = useState(myrecipe);
+  // const [onerecipe, setOneRecipe] = useState(myrecipe);
 
-  const deletefavoutiteHandler = (id) => {
-    axios
-      .delete(`/api/profile/${myrecipe.id}`)
-      .then((res) => {
-        setOneRecipe(onerecipe.filter((onerec) => onerec.id !== id));
-      })
-      .catch((err) => console.log(err.response.data));
-  };
+  // const deletefavoutiteHandler = (id) => {
+  //   axios
+  //     .delete(`/api/profile/${myrecipe.id}`)
+  //     .then((res) => {
+  //       setOneRecipe(onerecipe.filter((onerec) => onerec.id !== id));
+  //     })
+  //     .catch((err) => console.log(err.response.data));
+  // };
   return (
 
     <Col xs={4} className="mt-3 d-flex justify-content-center">
