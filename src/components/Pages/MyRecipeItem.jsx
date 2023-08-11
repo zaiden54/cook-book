@@ -1,19 +1,20 @@
 import React, { useState } from 'react';
-import { Button, Col, Container, Row } from 'react-bootstrap';
-import axios from 'axios'
+import {
+  Button, Col, Container, Row,
+} from 'react-bootstrap';
+import axios from 'axios';
 
 export default function MyRecipeItem({ myrecipe }) {
+  const [onerecipe, setOneRecipe] = useState(myrecipe);
 
-    const [onerecipe, setOneRecipe] = useState(myrecipe);
-
-    const deletefavoutiteHandler = (id) => {
-        axios
-          .delete(`/api/profile/${myrecipe.id}`)
-          .then((res) => {
-            setOneRecipe(onerecipe.filter((onerec) => onerec.id !== id));
-          })
-          .catch((err) => console.log(err.response.data));
-      };
+  const deletefavoutiteHandler = (id) => {
+    axios
+      .delete(`/api/profile/${myrecipe.id}`)
+      .then((res) => {
+        setOneRecipe(onerecipe.filter((onerec) => onerec.id !== id));
+      })
+      .catch((err) => console.log(err.response.data));
+  };
   return (
 
     <div className="col-4 mt-1">
