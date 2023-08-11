@@ -4,10 +4,10 @@ import { Button } from 'react-bootstrap';
 import RecipeItem from './RecipeItem';
 
 export default function MainPage() {
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState('0');
   const [recipes, setRecipes] = useState([]);
   useEffect(() => {
-    fetch('api/recipe')
+    fetch(`api/recipe/list/${page}`)
       .then((data) => data.json())
       .then((data) => setRecipes(data));
   }, [page]);
@@ -33,11 +33,15 @@ export default function MainPage() {
   return (
     <>
       <h1>Рецепты</h1>
+      <div className="d-flex justify-content-center align-item-center mt-3 mb-3">
+        <Button variant="outline-primary" onClick={() => setPage(() => '1')}>Категория</Button>
+        <Button variant="outline-primary" onClick={() => setPage(() => '2')}>Страна</Button>
+      </div>
       <div className="row justify-content-evenly wrapper">
         {recipes.map((el) => <RecipeItem recipe={el} key={el.idMeal} addToFavHandler={addToFavHandler} />)}
       </div>
       <div className="d-flex justify-content-center align-item-center mt-3 mb-3">
-        <Button variant="outline-primary" onClick={() => setPage((prev) => prev + 1)}>Click</Button>
+        <Button variant="outline-primary" onClick={() => setPage((prev) => `${prev}9`)}>Click</Button>
       </div>
     </>
   );

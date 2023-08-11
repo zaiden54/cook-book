@@ -6,25 +6,54 @@ import {
 
 const router = express.Router();
 
-router.get('/recipe', async (req, res) => {
+router.get('/recipe/list/:id', async (req, res) => {
+  const { id } = req.params;
+  let str;
+  switch (id) {
+    case '0':
+      str = 'http://www.themealdb.com/api/json/v1/1/random.php';
+      break;
+    case '1':
+      str = 'http://www.themealdb.com/api/json/v1/1/filter.php?c=Seafood';
+      break;
+    case '2':
+      str = 'http://www.themealdb.com/api/json/v1/1/filter.php?a=Canadian';
+      break;
+    default:
+      res.sendStatus(501);
+  }
+  console.log(str);
+
   try {
     let arr = [];
     for (let i = 0; i < 12; i += 1) {
-      arr.push(fetch('http://www.themealdb.com/api/json/v1/1/random.php'));
+      arr.push(fetch(str));
     }
     arr = (await Promise.allSettled(arr)).filter((el) => el.status === 'fulfilled');
-    console.log('Array====', arr);
     arr = arr.map(((el) => el.value.json()));
     arr = (await Promise.allSettled(arr)).filter((el) => el.status === 'fulfilled');
-    console.log('Array====', arr);
     arr = arr.map(((el) => el.value.meals[0]));
-    console.log('Array====', arr);
-    console.log('Arr======', arr.length);
-    const set = [...new Set(arr)];
-    console.log('Set=====', set.length);
-    res.json(arr);
+    // удаление повторний
+    const set = arr.filter((el, i, array) => {
+      const temp = [];
+      for (let j = 0; j < i; j += 1) {
+        temp.push(array[j].idMeal);
+      }
+      if (temp.includes(el.idMeal)) return false;
+      return true;
+    });
+    while (set.length < 12) {
+      const newRecipe = (await ((await fetch(str)).json())).meals[0];
+      const temp = [];
+      set.forEach((el) => temp.push(el.idMeal));
+      if (!temp.includes(newRecipe.idMeal)) {
+        set.push(newRecipe);
+        console.log('Подгрузка, idMeal = ', newRecipe.idMeal);
+      }
+    }
+    res.json(set);
   } catch (err) {
-    console.log(err);
+    console.log('Error = ', err);
     res.sendStatus(500);
   }
 });
