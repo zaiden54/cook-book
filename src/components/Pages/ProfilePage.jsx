@@ -15,7 +15,6 @@ export default function ProfilePage({ myrecipes }) {
       .catch((err) => console.log(err.response.data));
   };
   return (
-
     <div className="container">
       <div className="text-center mt-4 mb-4">
         <h3>Мои избранные Рецепты</h3>
@@ -23,8 +22,8 @@ export default function ProfilePage({ myrecipes }) {
       <div className="row justify-content-evenly wrapper">
         {currentRecipes.map((myrecipe) => (
           <MyRecipeItem
+            key={myrecipe.id}
             myrecipe={myrecipe}
-            key={myrecipe.idMeal}
             deletefavoutiteHandler={deletefavoutiteHandler}
           />
         ))}

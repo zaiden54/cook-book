@@ -17,6 +17,9 @@ module.exports = {
       instructions: {
         type: Sequelize.TEXT,
       },
+      idMeal: {
+        type: Sequelize.STRING,
+      },
       catId: {
         type: Sequelize.INTEGER,
         references: {
